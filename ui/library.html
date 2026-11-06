@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Artifact library</title>
+  <link rel="stylesheet" href="/app.css">
+  <script type="module" src="/library.js"></script>
+</head>
+<body>
+  <header class="toolbar">
+    <span class="brand"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 4H4v5m11-5h5v5m0 6v5h-5m-6 0H4v-5M9 9h6v6H9z"/></svg></span>DC Canvas</span>
+    <label class="folder-control" for="artifact-origin">Folder
+      <select id="artifact-origin" disabled></select>
+    </label>
+    <div class="toolbar-actions">
+      <button class="button" id="library-agent" type="button">Agent setup</button>
+    </div>
+  </header>
+  <main class="library">
+    <div class="library-heading">
+      <h1>Artifacts</h1>
+      <p id="artifact-count" class="detail"></p>
+    </div>
+    <ul id="artifacts" class="artifact-list" aria-label="Artifacts" hidden></ul>
+    <div id="library-state" class="library-state">
+      <p id="library-status" role="status">Loading artifacts…</p>
+      <button class="button primary" id="library-retry" type="button" hidden>Retry</button>
+      <div class="artifact-list skeleton-list" id="library-skeleton" aria-hidden="true"><span></span><span></span><span></span></div>
+    </div>
+  </main>
+  <dialog id="library-setup" aria-labelledby="library-setup-title">
+    <form method="dialog" class="dialog-heading">
+      <h2 id="library-setup-title">Connect your agent</h2>
+      <button class="icon-button" aria-label="Close" type="submit">×</button>
+    </form>
+    <p id="library-scope"></p>
+    <pre id="library-config"></pre>
+    <div class="dialog-actions">
+      <button class="button primary" id="library-copy" type="button">Copy config</button>
+    </div>
+  </dialog>
+</body>
+</html>

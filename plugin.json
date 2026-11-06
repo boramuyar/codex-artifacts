@@ -1,0 +1,19 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "dc-canvas",
+  "version": "0.3.0",
+  "description": "Create, revise, and preview interactive design boards in a local canvas.",
+  "repository": "https://github.com/boramuyar/codex-artifacts",
+  "license": "MIT",
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Codex Artifacts",
+        "shortDescription": "Interactive design boards",
+        "longDescription": "Ask Codex to build interactive prototypes, organize boards on a canvas, and revise them from browser feedback. Preview and comment locally, or export a portable HTML file.",
+        "category": "Creativity",
+        "defaultPrompt": "Create a DC Canvas prototype for the flow I describe."
+      }
+    }
+  }
+}

@@ -1,0 +1,11 @@
+/library/
+/project/
+/exports/
+/dist/
+/dc-canvas-test-*/
+/node_modules/
+/.codex/
+.env
+.env.*
+*.tgz
+*.log

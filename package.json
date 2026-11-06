@@ -1,0 +1,32 @@
+{
+  "name": "dc-canvas-harness",
+  "version": "0.3.0",
+  "description": "Local Design Component canvas, MCP tools, and standalone HTML exporter",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/boramuyar/codex-artifacts.git"
+  },
+  "type": "module",
+  "bin": {
+    "dc-canvas": "bin/dc-canvas.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "files": [
+    "bin",
+    "skills",
+    "src",
+    "ui",
+    "mcp.json",
+    "plugin.json",
+    "CONTRIBUTING.md",
+    "docs/screenshots",
+    "GUIDE.md",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "node --test"
+  }
+}

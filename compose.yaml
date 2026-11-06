@@ -1,0 +1,16 @@
+services:
+  canvas:
+    build: .
+    container_name: ${DC_CANVAS_CONTAINER:-dc-canvas}
+    environment:
+      DC_CANVAS_CONTAINER: ${DC_CANVAS_CONTAINER:-dc-canvas}
+      DC_CANVAS_ORIGIN: "${DC_CANVAS_ORIGIN:-/workspace}"
+    command: ["serve", "--library", "/workspace/library", "--host", "0.0.0.0", "--port", "${DC_CANVAS_PORT:-4173}"]
+    ports:
+      - "127.0.0.1:${DC_CANVAS_PORT:-4173}:${DC_CANVAS_PORT:-4173}"
+    volumes:
+      - canvas-project:/workspace
+    init: true
+
+volumes:
+  canvas-project:

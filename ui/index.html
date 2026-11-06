@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DC Canvas</title>
+  <link rel="stylesheet" href="/app.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <header class="toolbar">
+    <a id="back-library" class="library-back" href="/" hidden>‹ Library</a>
+    <span id="artifact-title" class="brand">DC Canvas</span>
+    <div class="toolbar-actions">
+      <button class="icon-button" id="refresh" type="button" aria-label="Refresh previews" title="Refresh previews">
+        <svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true"><path d="M13 6a5.3 5.3 0 1 0 .1 4m0-7v3H10" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="button" id="comments" type="button" aria-expanded="false" aria-controls="comments-panel">Comments</button>
+      <button class="button" id="view-source" type="button" aria-pressed="false">Source</button>
+      <button class="button" id="agent-setup" type="button">Agent setup</button>
+      <details id="share-menu" class="share">
+        <summary class="button">Share</summary>
+        <div class="share-actions">
+          <p class="menu-label">Local link</p>
+          <button class="button" id="copy-link" type="button">Copy local link</button>
+          <p class="menu-label export-label">Download HTML</p>
+          <button class="button" id="share-frame" type="button">Download this frame</button>
+          <button class="button" id="share-page" type="button">Download this page</button>
+          <button class="button" id="export" type="button">Download all pages</button>
+          <div class="share-feedback" id="share-feedback" hidden>
+            <p id="share-status" role="status"></p>
+            <button class="button" id="retry-export" type="button" hidden>Retry download</button>
+          </div>
+        </div>
+      </details>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="floating-tools" id="design-tools" hidden>
+      <div class="tool-palette" aria-label="Canvas tools">
+        <select id="page-picker" aria-label="Page" title="Page"></select>
+        <span class="palette-divider"></span>
+        <button class="button" id="comment-tool" type="button" aria-keyshortcuts="C" aria-pressed="false">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 4h12v10H9l-4 3v-3H4zM10 6v6M7 9h6"/></svg>
+          Comment <kbd aria-hidden="true">C</kbd>
+        </button>
+      </div>
+      <div class="tool-palette zoom" id="zoom" aria-label="Canvas view">
+        <button class="button" id="view-canvas" type="button" hidden>Back to canvas</button>
+        <button class="icon-button" id="zoom-out" type="button" aria-label="Zoom out" title="Zoom out">−</button>
+        <button class="button zoom-fit" id="zoom-fit" type="button" aria-label="Fit to view" title="Fit to view">Fit</button>
+        <button class="icon-button" id="zoom-in" type="button" aria-label="Zoom in" title="Zoom in">+</button>
+      </div>
+    </div>
+    <section class="stage" id="stage" tabindex="0" aria-label="Board preview">
+      <div class="empty" id="empty">
+        <h1>This page is empty</h1>
+        <p>Ask your agent to add a frame to this page.</p>
+      </div>
+      <div class="world" id="world" hidden></div>
+    </section>
+    <p class="comment-placement" id="comment-placement" role="status" hidden>Choose a spot on a frame. Press <kbd>Esc</kbd> to cancel.</p>
+    <form class="comment-composer" id="comment-form" aria-label="New comment" hidden>
+      <label id="comment-target" for="comment-text">New comment</label>
+      <textarea id="comment-text" rows="3" maxlength="3000" required placeholder="Leave feedback"></textarea>
+      <p class="inline-error" id="comment-error" role="alert" hidden></p>
+      <div class="comment-actions">
+        <button class="button" id="cancel-comment" type="button">Cancel</button>
+        <button class="button primary" id="save-comment" type="submit">Post comment</button>
+      </div>
+    </form>
+
+    <section class="source-panel" id="source-panel" aria-label="Board source" hidden>
+      <form id="source-form">
+        <div class="source-heading"><h1>Source</h1><span class="tag" id="source-status" role="status">Up to date</span></div>
+        <div class="form-fields">
+          <label>Title <input id="edit-title" required maxlength="160"></label>
+          <label>Filename <input id="edit-filename" readonly></label>
+          <label id="edit-page-label">Page <select id="edit-page"></select></label>
+        </div>
+        <div class="source-controls">
+          <div class="segmented" aria-label="Source field">
+            <button type="button" data-field="html" aria-pressed="true">Template</button>
+            <button type="button" data-field="js" aria-pressed="false">Logic</button>
+            <button type="button" data-field="props" aria-pressed="false">Props</button>
+          </div>
+          <button class="button primary" id="save" type="submit">Save board</button>
+        </div>
+        <textarea id="edit-html" spellcheck="false" aria-label="Template markup"></textarea>
+        <textarea id="edit-js" spellcheck="false" aria-label="Logic JavaScript" hidden></textarea>
+        <textarea id="edit-props" spellcheck="false" aria-label="Property metadata JSON" aria-describedby="source-message" hidden></textarea>
+        <pre class="latest-source" id="latest-source" tabindex="0" aria-label="Latest source" hidden></pre>
+        <div class="source-feedback" id="source-feedback" hidden>
+          <p id="source-message" role="status"></p>
+          <div class="source-actions">
+            <button class="button" id="compare-source" type="button" hidden>View latest</button>
+            <button class="button" id="use-latest" type="button" hidden>Use latest</button>
+          </div>
+        </div>
+      </form>
+    </section>
+    <aside class="comments-panel" id="comments-panel" aria-labelledby="comments-title" hidden>
+      <div class="dialog-heading">
+        <h2 id="comments-title">Comments</h2>
+        <button class="icon-button" id="close-comments" type="button" aria-label="Close comments">×</button>
+      </div>
+      <p class="comment-hint" id="comment-count"></p>
+      <div id="comment-list" class="comment-list"></div>
+    </aside>
+  </main>
+  <p class="status" id="status" role="status" data-kind="quiet">Loading canvas…</p>
+
+  <dialog id="setup-dialog" aria-labelledby="setup-title">
+    <form method="dialog" class="dialog-heading">
+      <h2 id="setup-title">Connect your agent</h2>
+      <button class="icon-button" aria-label="Close" type="submit">×</button>
+    </form>
+    <p id="setup-scope">Add this server to your agent’s MCP configuration.</p>
+    <pre id="setup-config"></pre>
+    <div class="dialog-actions">
+      <a id="guide-link" href="/api/guide" target="_blank" rel="noopener">Authoring guide</a>
+      <button class="button primary" id="copy-config" type="button">Copy config</button>
+    </div>
+  </dialog>
+</body>
+</html>
